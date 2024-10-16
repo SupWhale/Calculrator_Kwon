@@ -23,6 +23,7 @@ public class LineCalculator {
         double secondNumber = 0;
 
         for(int i=0; i<postfix.size(); i++){
+            //연산자 구분을 위해 선언
             c = postfix.get(i).charAt(0);
 
             // 숫자인 경우 스택에 저장
@@ -33,6 +34,7 @@ public class LineCalculator {
             else {
                 secondNumber = Double.parseDouble(stack.pop().toString());
                 firstNumber = Double.parseDouble(stack.pop().toString());
+                //열거형에서 알맞은 연산자 찾기
                 OperatorType opType = OperatorType.FindOperatorType(Character.toString(c));
                 if(opType != null){
                     switch (opType.getOperation()){
@@ -81,18 +83,21 @@ public class LineCalculator {
             if (Character.isDigit(c)){
                 String result = "";
                 result += c;
+                //피연산자가 2자리이상일 경우라면
                 if(Character.isDigit(infix.charAt(i+1))){
                     for(int j=i+1; j<infix.length(); j++){
+                        //피연산자가 유리수일수도 있는 경우
                         if(Character.isDigit(infix.charAt(j)) || infix.charAt(j) == '.'){
                             result += infix.charAt(j);
                         }else{
+                            //그 뒤로 숫자가 없다면 j는 무조건 i+1의 숫자이므로
+                            //j-1로 포인터를 재조정하여 빠지는 배열이 없도록한다.
                             i = j-1;
                             break;
                         }
                     }
                 }
-
-
+                //연산요소 추가
                 sb.add(result);
             }
             // 연산자 스택이 비어있을 경우 opStack에 값 push
@@ -149,8 +154,9 @@ public class LineCalculator {
 
         char check = ' ';
         while(!opStack.isEmpty()) {
+            //정확한 구분을 위해 char 타입으로 pop한다.
             check = (char) opStack.pop();
-            //여는 괄호이거나 공백이나 문자가 아닌 경우에만 후위식에 추가한다.
+            //여는 괄호이거나 공백이나 문자가 아닌 경우에만 수식에 추가한다.
             if (check != '(' && check != ' ') {
                 //char to String 변환
                 String result = "";
@@ -158,7 +164,6 @@ public class LineCalculator {
                 sb.add(result);
             }
         }
-
         return sb;
     }
 

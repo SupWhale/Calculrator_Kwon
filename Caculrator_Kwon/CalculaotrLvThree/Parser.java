@@ -14,16 +14,18 @@ public class Parser {
     private static final String NUMBER_REG = "^[0-9]*$";
     private static final String RATIONAL_NUMBER_REG = "^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][-+]?[0-9]+)?$";
 
-    private final Calculator calculator = new Calculator();
     private final ArithmeticCalculator arithmeticCalculator = new ArithmeticCalculator();
     private static OperatorType op;
 
     
     //문자열 변수를 받고 숫자형으로 변환하여 첫번째 숫자에 삽입
     public Parser parseFirstNum(String firstInput) throws Exception{
+        //정수형인지 체크
         if(Pattern.matches(NUMBER_REG,firstInput)){
             this.arithmeticCalculator.setFirstNumber(Integer.parseInt(firstInput));
-        }else if(Pattern.matches(RATIONAL_NUMBER_REG,firstInput)){
+        }
+        //유리수인지 체크
+        else if(Pattern.matches(RATIONAL_NUMBER_REG,firstInput)){
             this.arithmeticCalculator.setFirstNumber(Double.parseDouble(firstInput));
         }else{
             throw new BadInputException("숫자");
@@ -33,12 +35,15 @@ public class Parser {
 
     //문자열 변수를 받고 숫자형으로 변환하여 두번째 숫자에 삽입
     public Parser parseSecondNum(String secondInput) throws Exception{
+        //정수형인지 체크
         if(Pattern.matches(NUMBER_REG,secondInput)){
             this.arithmeticCalculator.setSecondNumber(Integer.parseInt(secondInput));
             if(secondInput.equals("0") && op.getOperation().equals("/")){
                 throw new CantDevideException();
             }
-        }else if(Pattern.matches(RATIONAL_NUMBER_REG,secondInput)){
+        }
+        //유리수인지 체크
+        else if(Pattern.matches(RATIONAL_NUMBER_REG,secondInput)){
             this.arithmeticCalculator.setSecondNumber(Double.parseDouble(secondInput));
         }else{
             throw new BadInputException("숫자");
@@ -46,11 +51,12 @@ public class Parser {
         return this;
     }
 
-    //연산자 타입 변경 및 연산 타입 세티
+    //연산자 타입 변경 및 연산 타입 세팅
     public Parser parseOperator(String operationInput) throws Exception{
         if(!Pattern.matches(OPERATION_REG,operationInput)){
             throw new BadInputException("연산자(를)");
         }
+        //열거형에서 연산자 서치
         op = OperatorType.FindOperatorType(operationInput);
 
         switch(op.getOperation()){
@@ -61,10 +67,6 @@ public class Parser {
             case "%" -> this.arithmeticCalculator.setOperation(new PercentOperation());
         }
         return this;
-    }
-
-    public Number executeCalculator() {
-        return calculator.calculate();
     }
 
     public Number executeCalculator_Generic() throws Exception {
