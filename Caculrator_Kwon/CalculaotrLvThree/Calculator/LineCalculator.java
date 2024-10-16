@@ -1,15 +1,17 @@
 package Caculrator_Kwon.CalculaotrLvThree.Calculator;
 
+import Caculrator_Kwon.CalculaotrLvThree.Exception.BadInputException;
 import Caculrator_Kwon.CalculaotrLvThree.Operator.OperatorType;
 
+import java.rmi.server.ExportException;
 import java.util.Stack;
 
 public class LineCalculator {
-    public static Number Calculate(String line){
+    public static Number Calculate(String line) throws Exception {
         return (postfixCalculate(convPostfix(line)));
     }
 
-    public static double postfixCalculate(String postfix){
+    public static double postfixCalculate(String postfix) throws Exception {
         Stack stack = new Stack();
         char c = ' ';
         double firstNumber = 0;
@@ -51,15 +53,18 @@ public class LineCalculator {
                         case "%":
                             stack.push(firstNumber % secondNumber);
                             break;
+                        //숫자, 연산자를 제외한 문자가 발견되었을 경우 연산을 즉시 종료한다.
+                        default: throw new BadInputException("숫자나 연산자");
                     }
+                }else{
+                    throw new BadInputException("숫자나 연산자");
                 }
             }
         }
-
         return Double.parseDouble(stack.pop().toString());
     }
 
-    public static String convPostfix(String infix){
+    public static String convPostfix(String infix) throws Exception{
         char c = ' ';
         Stack opStack = new Stack(); //수식 스택
         StringBuilder sb = new StringBuilder(); //변환된 후위식(리턴값)
@@ -87,14 +92,16 @@ public class LineCalculator {
                 else if (c == ')'){
                     char check = ' ';
                     while(true) {
-                        check = (char) opStack.pop();
-                        if (check == '(') {
-                            break;
-                        }
-                        else {
-                            //공백 문자를 제외한 나머지를 입력합니다.
-                            if(check != 0){
-                                sb.append(check);
+                        if(!opStack.isEmpty()){ //opstack 공백 체크
+                            check = (char) opStack.pop();
+                            if (check == '(') {
+                                break;
+                            }
+                            else {
+                                //공백 문자를 제외한 나머지를 입력합니다.
+                                if(check != 0){
+                                    sb.append(check);
+                                }
                             }
                         }
                     }
@@ -125,9 +132,11 @@ public class LineCalculator {
         char check = ' ';
         while(!opStack.isEmpty()) {
             check = (char) opStack.pop();
-            //여는 괄호이거나 공백이 아닌 경우에만 후위식에 추가합니다.
+            //여는 괄호이거나 공백이나 문자가 아닌 경우에만 후위식에 추가한다.
             if (check != '(' && check != ' ' && check < 97) {
                 sb.append(check);
+            }else{
+                throw new BadInputException("숫자나 연산자");
             }
         }
 
@@ -135,19 +144,20 @@ public class LineCalculator {
     }
 
     // 연산자 우선순위 반환
-    public static int getOpPriority(char c){
+    public static int getOpPriority(char c) throws BadInputException {
         switch (c) {
-            case '*' -> { return 3; }
-            case '/' -> { return 3; }
-            case '+'-> { return 2; }
-            case '-' -> { return 2; }
+            //곱셈, 나눗셈, 그리고 나머지 구하기는 제일 높은 순위
+            case '*', '/', '%' -> { return 3;}
+            //더하기, 빼기는 2번제 높은 순위
+            case '+', '-' -> { return 2; }
+            //제일 낮은 순위
             case '(' -> {return 1;}
-            default -> {return -1;}
+            default -> {throw new BadInputException("제대로된 수식");}
         }
     }
 
     // 연산자 우선순위 비교
-    public static int compareOp(char stackOp, char curOp){
+    public static int compareOp(char stackOp, char curOp) throws BadInputException {
         int stackOpPriority = getOpPriority(stackOp);
         int curOpPriority = getOpPriority(curOp);
 

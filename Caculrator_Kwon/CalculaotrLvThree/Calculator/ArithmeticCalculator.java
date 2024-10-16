@@ -23,7 +23,7 @@ public class ArithmeticCalculator <T extends Number>{
     public ArithmeticCalculator(){
     }
 
-    public static Number lineCalculate(String numberLine){
+    public static Number lineCalculate(String numberLine) throws Exception {
         Number result = 0.0;
         result = LineCalculator.Calculate(numberLine);
         return result;
