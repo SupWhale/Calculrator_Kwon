@@ -14,7 +14,7 @@ public class CalculatorApp {
         String operator = "";
 
         System.out.println("실행할 작업을 선택해주세요");
-        System.out.println("1. 단순 계산 2. 수식 계산 3. 결과값 비교 4. 최근 계산값 삭제 5. 나가기");
+        System.out.println("1. 단순 계산 2. 수식 계산 3. 결과값 비교 4. 최근 결과값 삭제 5. 나가기");
 
         String modeInput = scanner.nextLine();
         switch (modeInput){
