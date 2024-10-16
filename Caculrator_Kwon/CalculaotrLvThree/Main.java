@@ -15,7 +15,7 @@ public class Main {
         List<CalStatus> calculatorStateResultList = new ArrayList<CalStatus>(); //계산 결과를 받을 Array List
         CalStatus calculatorState = new CalStatus(); //현재 계산기 모드 체크
         calculatorState.setStatusName("start");  //초기 계산기 모드 값
-        while (!calculatorState.getStatusName().equals("4")) {
+        while (!calculatorState.getStatusName().equals("5")) {
             try {
                 calculatorState = CalculatorApp.start();
                 if(calculatorState.getStatusName().equals("3")){
@@ -23,8 +23,11 @@ public class Main {
                     double result = (Double) calculatorState.getCheckValue();
                     //비교리스트 출력
                     calculatorState.printResultValueList(result, calculatorStateResultList);
+                }else if(calculatorState.getStatusName().equals("4")){
+                    System.out.println("계산결과 " + calculatorStateResultList.getFirst().getResultValue() +"가 삭제되었습니다!");
+                    calculatorStateResultList.removeFirst();
                 }
-                //그냥 계산이면 계산 결과 저장하기
+                //계산이라면 계산 결과 저장하기
                 calculatorStateResultList.add(calculatorState);
             } catch (Exception e) {
                 System.out.println(e.getMessage());

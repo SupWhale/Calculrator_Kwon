@@ -84,16 +84,18 @@ public class LineCalculator {
                 String result = "";
                 result += c;
                 //피연산자가 2자리이상일 경우라면
-                if(Character.isDigit(infix.charAt(i+1))){
-                    for(int j=i+1; j<infix.length(); j++){
-                        //피연산자가 유리수일수도 있는 경우
-                        if(Character.isDigit(infix.charAt(j)) || infix.charAt(j) == '.'){
-                            result += infix.charAt(j);
-                        }else{
-                            //그 뒤로 숫자가 없다면 j는 무조건 i+1의 숫자이므로
-                            //j-1로 포인터를 재조정하여 빠지는 배열이 없도록한다.
-                            i = j-1;
-                            break;
+                if(i+1 < infix.length()) {
+                    if (Character.isDigit(infix.charAt(i + 1))) {
+                        for (int j = i + 1; j < infix.length(); j++) {
+                            //피연산자가 유리수일수도 있는 경우
+                            if (Character.isDigit(infix.charAt(j)) || infix.charAt(j) == '.') {
+                                result += infix.charAt(j);
+                            } else {
+                                //그 뒤로 숫자가 없다면 j는 무조건 i+1의 숫자이므로
+                                //j-1로 포인터를 재조정하여 빠지는 배열이 없도록한다.
+                                i = j - 1;
+                                break;
+                            }
                         }
                     }
                 }
@@ -144,7 +146,9 @@ public class LineCalculator {
                 else {
                     while(!opStack.isEmpty()){
                         if (compareOp((char)opStack.peek(), c) <= 0){
-                            sb.add((String)opStack.pop());
+                            String result = "";
+                            result += opStack.pop();
+                            sb.add(result);
                         }
                     }
                     opStack.push(c);
@@ -165,6 +169,7 @@ public class LineCalculator {
             }
         }
         return sb;
+
     }
 
     // 연산자 우선순위 반환
