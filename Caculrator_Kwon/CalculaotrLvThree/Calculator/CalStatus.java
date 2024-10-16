@@ -36,7 +36,7 @@ public class CalStatus {
     public void printResultValueList(Double chkValue, List<CalStatus> calculatorStateResultList){
         DoubleStream resultStreamList = calculatorStateResultList.stream()
                 .mapToDouble(a -> a.getResultValue().doubleValue());
-        resultStreamList.forEach(System.out::println);
+        resultStreamList.filter(a -> a > chkValue).forEach(System.out::println);
     }
 
 }
