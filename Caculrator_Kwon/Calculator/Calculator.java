@@ -1,6 +1,6 @@
-package Caculrator_Kwon;
+package Caculrator_Kwon.Calculator;
 
-import Caculrator_Kwon.Operation.AbstractOperation;
+import Caculrator_Kwon.CalculaotrLvThree.Operation.AbstractOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,12 @@ public class Calculator {
 
     private AbstractOperation operation;
     private String calculateType;
-
     private List<Number> resultList = new ArrayList<Number>();
+
 
     public Calculator(AbstractOperation operation){
         this.operation = operation;
     }
-
     public Calculator(){
 
     }
@@ -36,6 +35,8 @@ public class Calculator {
         resultList.add(result);
         return result;
     }
+
+
 
     public Number getFirstNumber() {
         return firstNumber;

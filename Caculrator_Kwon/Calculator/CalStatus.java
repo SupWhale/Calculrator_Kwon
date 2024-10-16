@@ -1,4 +1,6 @@
-package Caculrator_Kwon;
+package Caculrator_Kwon.Calculator;
+
+import java.util.List;
 
 public class CalStatus {
 
@@ -29,4 +31,14 @@ public class CalStatus {
     public void setCheckValue(Number checkValue) {
         this.checkValue = checkValue;
     }
+
+    public void printResultValueList(Double chkValue, List<CalStatus> calculatorStateResultList){
+        List<CalStatus> resultStreamList = calculatorStateResultList.stream()
+                .filter(a -> (Double) a.getResultValue() > chkValue)
+                .toList();
+        for (CalStatus calStatus : resultStreamList) {
+            System.out.println(calStatus.getResultValue());
+        }
+    }
+
 }

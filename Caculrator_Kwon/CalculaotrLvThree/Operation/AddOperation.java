@@ -1,4 +1,4 @@
-package Caculrator_Kwon.Operation;
+package Caculrator_Kwon.CalculaotrLvThree.Operation;
 
 public class AddOperation extends AbstractOperation {
 
@@ -6,8 +6,9 @@ public class AddOperation extends AbstractOperation {
     public int operateInteger(Integer firstNumber, Integer secondNumber){
         return firstNumber + secondNumber;
     }
+
     @Override
     public double operateDouble(Double firstNumber, Double secondNumber) {
-        return (Double) firstNumber + secondNumber;
+        return firstNumber + secondNumber;
     }
 }

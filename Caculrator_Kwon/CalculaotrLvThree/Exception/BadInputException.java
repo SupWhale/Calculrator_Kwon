@@ -1,4 +1,4 @@
-package Caculrator_Kwon.Exception;
+package Caculrator_Kwon.CalculaotrLvThree.Exception;
 
 public class BadInputException extends Exception{
         public BadInputException(String type) {

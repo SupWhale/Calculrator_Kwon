@@ -1,6 +1,7 @@
-package Caculrator_Kwon;
+package Caculrator_Kwon.Calculator;
 
-import Caculrator_Kwon.Operation.AbstractOperation;
+import Caculrator_Kwon.CalculaotrLvThree.Operation.AbstractOperation;
+import Caculrator_Kwon.CalculaotrLvThree.Operator.OperatorType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ public class ArithmeticCalculator <T extends Number>{
     private static OperatorType op;
 
     private static AbstractOperation operation;
+    private LineCalculator lineCalculator;
 
     ArithmeticCalculator(Number FirstNumber, Number SecondNumber, String op){
         this.FirstNumber = FirstNumber;
@@ -25,20 +27,27 @@ public class ArithmeticCalculator <T extends Number>{
 
     private List<Number> resultList = new ArrayList<Number>();
 
-    ArithmeticCalculator(){
+    public ArithmeticCalculator(){
+    }
+
+    public static Number lineCalculate(String numberLine){
+        Number result = 0.0;
+        result = LineCalculator.Calculate(numberLine);
+        return result;
     }
 
     public static <T extends Number, R extends Number> Number calculate(T t, R r) throws Exception{
-        Number result = 0.0;
+        Number result = 0;
         if(t instanceof Integer && r instanceof Integer){
             result = operation.operateInteger((Integer) t, (Integer) r);
         }else if(t instanceof Double && r instanceof Double){
             result = operation.operateDouble((Double) t, (Double) r);
+        }else if(t instanceof Short && r instanceof Short){
+            result = operation.operateShort((Short) t, (Short) r);
+        }else if(t instanceof Long && r instanceof Long){
+            result = operation.operateLong((Long) t, (Long) r);
         }
-
-
         return result;
-
     }
 
     public Number getFirstNumber() {
