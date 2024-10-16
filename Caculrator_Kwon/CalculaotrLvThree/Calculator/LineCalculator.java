@@ -12,8 +12,8 @@ public class LineCalculator {
     public static double postfixCalculate(String postfix){
         Stack stack = new Stack();
         char c = ' ';
-        double op1 = 0;
-        double op2 = 0;
+        double firstNumber = 0;
+        double secondNumber = 0;
 
         for(int i=0; i<postfix.length(); i++){
             c = postfix.charAt(i);
@@ -24,32 +24,34 @@ public class LineCalculator {
             }
             // 연산자인 경우 계산 후 스택에 저장
             else {
-                op2 = Double.parseDouble(stack.pop().toString());
-                op1 = Double.parseDouble(stack.pop().toString());
+                secondNumber = Double.parseDouble(stack.pop().toString());
+                firstNumber = Double.parseDouble(stack.pop().toString());
                 OperatorType opType = OperatorType.FindOperatorType(Character.toString(c));
-                switch (opType.getOperation()){
-                    // op2에 먼저 pop한 이유는 후위 표기법으로 변환할 때 순서가 바뀌기 때문
-                    // ex) 3+2 => 스택에 저장 시 3, 2 순으로 저장되는데 스택은 마지막에 push한
-                    // 데이터가 가장 위에 있으므로
-                    case "+":
-                        stack.push(op1 + op2);
-                        break;
+                if(opType != null){
+                    switch (opType.getOperation()){
+                        // op2에 먼저 pop한 이유는 후위 표기법으로 변환할 때 순서가 바뀌기 때문
+                        // ex) 3+2 => 스택에 저장 시 3, 2 순으로 저장되는데 스택은 마지막에 push한
+                        // 데이터가 가장 위에 있으므로
+                        case "+":
+                            stack.push(firstNumber + secondNumber);
+                            break;
 
-                    case "-":
-                        stack.push(op1 - op2);
-                        break;
+                        case "-":
+                            stack.push(firstNumber - secondNumber);
+                            break;
 
-                    case "*":
-                        stack.push(op1 * op2);
-                        break;
+                        case "*":
+                            stack.push(firstNumber * secondNumber);
+                            break;
 
-                    case "/":
-                        stack.push(op1 / op2);
-                        break;
+                        case "/":
+                            stack.push(firstNumber / secondNumber);
+                            break;
 
-                    case "%":
-                        stack.push(op1 % op2);
-                        break;
+                        case "%":
+                            stack.push(firstNumber % secondNumber);
+                            break;
+                    }
                 }
             }
         }
@@ -90,7 +92,10 @@ public class LineCalculator {
                             break;
                         }
                         else {
-                            sb.append(check);
+                            //공백 문자를 제외한 나머지를 입력합니다.
+                            if(check != 0){
+                                sb.append(check);
+                            }
                         }
                     }
                     continue;
@@ -120,7 +125,8 @@ public class LineCalculator {
         char check = ' ';
         while(!opStack.isEmpty()) {
             check = (char) opStack.pop();
-            if (check != '(') {
+            //여는 괄호이거나 공백이 아닌 경우에만 후위식에 추가합니다.
+            if (check != '(' && check != ' ' && check < 97) {
                 sb.append(check);
             }
         }
