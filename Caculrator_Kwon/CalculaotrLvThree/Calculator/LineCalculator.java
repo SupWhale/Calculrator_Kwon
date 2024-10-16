@@ -4,25 +4,30 @@ import Caculrator_Kwon.CalculaotrLvThree.Exception.BadInputException;
 import Caculrator_Kwon.CalculaotrLvThree.Operator.OperatorType;
 
 import java.rmi.server.ExportException;
+import java.util.ArrayList;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 public class LineCalculator {
+    private static final String NUMBER_REG = "^[0-9]*$";
+    private static final String RATIONAL_NUMBER_REG = "^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][-+]?[0-9]+)?$";
+
     public static Number Calculate(String line) throws Exception {
         return (postfixCalculate(convPostfix(line)));
     }
 
-    public static double postfixCalculate(String postfix) throws Exception {
+    public static double postfixCalculate(ArrayList<String> postfix) throws Exception {
         Stack stack = new Stack();
         char c = ' ';
         double firstNumber = 0;
         double secondNumber = 0;
 
-        for(int i=0; i<postfix.length(); i++){
-            c = postfix.charAt(i);
+        for(int i=0; i<postfix.size(); i++){
+            c = postfix.get(i).charAt(0);
 
             // 숫자인 경우 스택에 저장
-            if (Character.isDigit(c)){
-                stack.push(c);
+            if (Pattern.matches(NUMBER_REG,postfix.get(i)) || Pattern.matches(RATIONAL_NUMBER_REG,postfix.get(i))){
+                stack.push(postfix.get(i));
             }
             // 연산자인 경우 계산 후 스택에 저장
             else {
@@ -64,17 +69,31 @@ public class LineCalculator {
         return Double.parseDouble(stack.pop().toString());
     }
 
-    public static String convPostfix(String infix) throws Exception{
+    public static ArrayList<String> convPostfix(String infix) throws Exception{
         char c = ' ';
         Stack opStack = new Stack(); //수식 스택
-        StringBuilder sb = new StringBuilder(); //변환된 후위식(리턴값)
+        ArrayList<String> sb = new ArrayList<String>(); //변환된 후위식(리턴값)
 
         for(int i=0; i<infix.length(); i++){
             c = infix.charAt(i);
 
             // 숫자이면 StringBuilder sb에 추가한다.
             if (Character.isDigit(c)){
-                sb.append(c);
+                String result = "";
+                result += c;
+                if(Character.isDigit(infix.charAt(i+1))){
+                    for(int j=i+1; j<infix.length(); j++){
+                        if(Character.isDigit(infix.charAt(j)) || infix.charAt(j) == '.'){
+                            result += infix.charAt(j);
+                        }else{
+                            i = j-1;
+                            break;
+                        }
+                    }
+                }
+
+
+                sb.add(result);
             }
             // 연산자 스택이 비어있을 경우 opStack에 값 push
             else if (opStack.isEmpty()){
@@ -100,7 +119,9 @@ public class LineCalculator {
                             else {
                                 //공백 문자를 제외한 나머지를 입력합니다.
                                 if(check != 0){
-                                    sb.append(check);
+                                    String result = "";
+                                    result += check;
+                                    sb.add(result);
                                 }
                             }
                         }
@@ -118,10 +139,7 @@ public class LineCalculator {
                 else {
                     while(!opStack.isEmpty()){
                         if (compareOp((char)opStack.peek(), c) <= 0){
-                            sb.append(opStack.pop());
-                        }
-                        else {
-                            break;
+                            sb.add((String)opStack.pop());
                         }
                     }
                     opStack.push(c);
@@ -133,14 +151,15 @@ public class LineCalculator {
         while(!opStack.isEmpty()) {
             check = (char) opStack.pop();
             //여는 괄호이거나 공백이나 문자가 아닌 경우에만 후위식에 추가한다.
-            if (check != '(' && check != ' ' && check < 97) {
-                sb.append(check);
-            }else{
-                throw new BadInputException("숫자나 연산자");
+            if (check != '(' && check != ' ') {
+                //char to String 변환
+                String result = "";
+                result += check;
+                sb.add(result);
             }
         }
 
-        return sb.toString();
+        return sb;
     }
 
     // 연산자 우선순위 반환
