@@ -1,6 +1,7 @@
 package Caculrator_Kwon.CalculaotrLvThree.Calculator;
 
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 public class CalStatus {
 
@@ -33,12 +34,9 @@ public class CalStatus {
     }
 
     public void printResultValueList(Double chkValue, List<CalStatus> calculatorStateResultList){
-        List<CalStatus> resultStreamList = calculatorStateResultList.stream()
-                .filter(a -> (Double) a.getResultValue() > chkValue)
-                .toList();
-        for (CalStatus calStatus : resultStreamList) {
-            System.out.println(calStatus.getResultValue());
-        }
+        DoubleStream resultStreamList = calculatorStateResultList.stream()
+                .mapToDouble(a -> a.getResultValue().doubleValue());
+        resultStreamList.forEach(System.out::println);
     }
 
 }

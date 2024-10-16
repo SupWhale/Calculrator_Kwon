@@ -31,10 +31,20 @@ public class ArithmeticCalculator <T extends Number>{
 
     public static <T extends Number, R extends Number> Number calculate(T t, R r) throws Exception{
         Number result = 0;
+        //정수형일 경우 계산
         if(t instanceof Integer && r instanceof Integer){
             result = operation.operateInteger((Integer) t, (Integer) r);
-        }else if(t instanceof Double && r instanceof Double){
+        }
+        //유리수일경우 계산
+        else if(t instanceof Double && r instanceof Double){
             result = operation.operateDouble((Double) t, (Double) r);
+        }
+        //둘중 타입이 서로 다른 경우라면 Double로 통일하여 계산한다.
+        else if(t instanceof Integer && r instanceof Double){
+            result = operation.operateDouble(t.doubleValue(), (Double) r);
+        }
+        else if(t instanceof Double && r instanceof Integer){
+            result = operation.operateDouble((Double) t, r.doubleValue());
         }
         return result;
     }

@@ -54,13 +54,13 @@ public class CalculatorApp {
             case "3" -> {
                 System.out.println("비교할 숫자를 입력해주세요");
                 firstInput = scanner.nextLine();
-                calStatus.setStatusName("결과값 비교");
+                calStatus.setStatusName("3");
                 parser.parseFirstNum(firstInput);
                 calStatus.setCheckValue(Double.parseDouble(firstInput));
                 return calStatus;
             }
             case "4" -> {
-                calStatus.setStatusName("나가기");
+                calStatus.setStatusName("4");
                 return calStatus;
             }
             default -> {
