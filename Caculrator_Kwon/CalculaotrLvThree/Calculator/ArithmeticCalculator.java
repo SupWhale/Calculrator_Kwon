@@ -13,19 +13,12 @@ public class ArithmeticCalculator <T extends Number>{
     private static OperatorType op;
 
     private static AbstractOperation operation;
-    private LineCalculator lineCalculator;
 
     ArithmeticCalculator(Number FirstNumber, Number SecondNumber, String op){
         this.FirstNumber = FirstNumber;
         this.SecondNumber = SecondNumber;
         setInputOperType(op);
     }
-
-    public ArithmeticCalculator(AbstractOperation operation){
-        this.operation = operation;
-    }
-
-    private List<Number> resultList = new ArrayList<Number>();
 
     public ArithmeticCalculator(){
     }
@@ -42,10 +35,6 @@ public class ArithmeticCalculator <T extends Number>{
             result = operation.operateInteger((Integer) t, (Integer) r);
         }else if(t instanceof Double && r instanceof Double){
             result = operation.operateDouble((Double) t, (Double) r);
-        }else if(t instanceof Short && r instanceof Short){
-            result = operation.operateShort((Short) t, (Short) r);
-        }else if(t instanceof Long && r instanceof Long){
-            result = operation.operateLong((Long) t, (Long) r);
         }
         return result;
     }
@@ -76,13 +65,5 @@ public class ArithmeticCalculator <T extends Number>{
 
     public void setSecondNumber(Number secondNumber) {
         SecondNumber = secondNumber;
-    }
-
-    public List<Number> getResultList() {
-        return resultList;
-    }
-
-    public void setResultList(List<Number> resultList) {
-        this.resultList = resultList;
     }
 }

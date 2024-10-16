@@ -3,6 +3,7 @@ package Caculrator_Kwon.CalculaotrLvThree;
 import Caculrator_Kwon.CalculaotrLvThree.Calculator.ArithmeticCalculator;
 import Caculrator_Kwon.CalculaotrLvThree.Calculator.Calculator;
 import Caculrator_Kwon.CalculaotrLvThree.Exception.BadInputException;
+import Caculrator_Kwon.CalculaotrLvThree.Exception.CantDevideException;
 import Caculrator_Kwon.CalculaotrLvThree.Operation.AddOperation;
 import Caculrator_Kwon.CalculaotrLvThree.Operation.DivideOperation;
 import Caculrator_Kwon.CalculaotrLvThree.Operation.MultiplyOperation;
@@ -20,27 +21,27 @@ public class Parser {
     private final ArithmeticCalculator arithmeticCalculator = new ArithmeticCalculator();
     private static OperatorType op;
 
+    
+    //문자열 변수를 받고 숫자형으로 변환하여 첫번째 숫자에 삽입
     public Parser parseFirstNum(String firstInput) throws Exception{
-        Number result = 0;
         if(Pattern.matches(NUMBER_REG,firstInput)){
-            result = Integer.parseInt(firstInput);
             this.arithmeticCalculator.setFirstNumber(Integer.parseInt(firstInput));
         }else if(Pattern.matches(RATIONAL_NUMBER_REG,firstInput)){
-            result = Double.parseDouble(firstInput);
             this.arithmeticCalculator.setFirstNumber(Double.parseDouble(firstInput));
         }else{
             throw new BadInputException("숫자");
         }
         return this;
     }
-    
+
+    //문자열 변수를 받고 숫자형으로 변환하여 두번째 숫자에 삽입
     public Parser parseSecondNum(String secondInput) throws Exception{
-        Number result = 0;
         if(Pattern.matches(NUMBER_REG,secondInput)){
-            result = Integer.parseInt(secondInput);
             this.arithmeticCalculator.setSecondNumber(Integer.parseInt(secondInput));
+            if(secondInput.equals("0") && op.getOperation().equals("/")){
+                throw new CantDevideException();
+            }
         }else if(Pattern.matches(RATIONAL_NUMBER_REG,secondInput)){
-            result = Double.parseDouble(secondInput);
             this.arithmeticCalculator.setSecondNumber(Double.parseDouble(secondInput));
         }else{
             throw new BadInputException("숫자");
@@ -48,6 +49,7 @@ public class Parser {
         return this;
     }
 
+    //연산자 타입 변경 및 연산 타입 세티
     public Parser parseOperator(String operationInput) throws Exception{
         if(!Pattern.matches(OPERATION_REG,operationInput)){
             throw new BadInputException("연산자(를)");
