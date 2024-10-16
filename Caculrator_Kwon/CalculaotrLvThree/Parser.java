@@ -4,16 +4,13 @@ import Caculrator_Kwon.CalculaotrLvThree.Calculator.ArithmeticCalculator;
 import Caculrator_Kwon.CalculaotrLvThree.Calculator.Calculator;
 import Caculrator_Kwon.CalculaotrLvThree.Exception.BadInputException;
 import Caculrator_Kwon.CalculaotrLvThree.Exception.CantDevideException;
-import Caculrator_Kwon.CalculaotrLvThree.Operation.AddOperation;
-import Caculrator_Kwon.CalculaotrLvThree.Operation.DivideOperation;
-import Caculrator_Kwon.CalculaotrLvThree.Operation.MultiplyOperation;
-import Caculrator_Kwon.CalculaotrLvThree.Operation.SubstractOperation;
+import Caculrator_Kwon.CalculaotrLvThree.Operation.*;
 import Caculrator_Kwon.CalculaotrLvThree.Operator.OperatorType;
 
 import java.util.regex.Pattern;
 
 public class Parser {
-    private static final String OPERATION_REG = "[+\\-*/]";
+    private static final String OPERATION_REG = "[+\\-*/%]";
     private static final String NUMBER_REG = "^[0-9]*$";
     private static final String RATIONAL_NUMBER_REG = "^[-+]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][-+]?[0-9]+)?$";
 
@@ -61,6 +58,7 @@ public class Parser {
             case "-" -> this.arithmeticCalculator.setOperation(new SubstractOperation());
             case "*" -> this.arithmeticCalculator.setOperation(new MultiplyOperation());
             case "/" -> this.arithmeticCalculator.setOperation(new DivideOperation());
+            case "%" -> this.arithmeticCalculator.setOperation(new PercentOperation());
         }
         return this;
     }

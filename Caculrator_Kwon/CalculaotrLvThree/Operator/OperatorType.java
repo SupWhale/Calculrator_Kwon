@@ -6,7 +6,8 @@ public enum OperatorType {
     PLUS("+"),
     MINUS("-"),
     TIMES("*"),
-    DIVIDE("/");
+    DIVIDE("/"),
+    PERCENT("%");
 
     private String operation;
 
