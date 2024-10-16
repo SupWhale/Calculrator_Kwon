@@ -3,7 +3,7 @@ package Caculrator_Kwon.CalculaotrLvThree.Calculator;
 import java.util.List;
 import java.util.stream.DoubleStream;
 
-public class CalStatus {
+public class CalculateStatus {
 
     private Number resultValue;
     private String statusName;
@@ -33,7 +33,7 @@ public class CalStatus {
         this.checkValue = checkValue;
     }
 
-    public void printResultValueList(Double chkValue, List<CalStatus> calculatorStateResultList){
+    public void printResultValueList(Double chkValue, List<CalculateStatus> calculatorStateResultList){
         DoubleStream resultStreamList = calculatorStateResultList.stream()
                 .mapToDouble(a -> a.getResultValue().doubleValue());
         resultStreamList.filter(a -> a > chkValue).forEach(System.out::println);

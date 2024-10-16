@@ -1,7 +1,7 @@
 package Caculrator_Kwon.CalculaotrLvThree;
 
 import Caculrator_Kwon.CalculaotrLvThree.Calculator.ArithmeticCalculator;
-import Caculrator_Kwon.CalculaotrLvThree.Calculator.CalStatus;
+import Caculrator_Kwon.CalculaotrLvThree.Calculator.CalculateStatus;
 import Caculrator_Kwon.CalculaotrLvThree.Calculator.CalculatorApp;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ public class Main {
     static ArithmeticCalculator<Number> arithmeticCalculator = new ArithmeticCalculator<Number>();
 
     public static void main(String[] args) {
-        List<CalStatus> calculatorStateResultList = new ArrayList<CalStatus>(); //계산 결과를 받을 Array List
-        CalStatus calculatorState = new CalStatus(); //현재 계산기 모드 체크
+        List<CalculateStatus> calculatorStateResultList = new ArrayList<CalculateStatus>(); //계산 결과를 받을 Array List
+        CalculateStatus calculatorState = new CalculateStatus(); //현재 계산기 모드 체크
         calculatorState.setStatusName("start");  //초기 계산기 모드 값
         while (!calculatorState.getStatusName().equals("5")) {
             try {

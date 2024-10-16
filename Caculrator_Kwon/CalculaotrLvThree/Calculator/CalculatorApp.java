@@ -5,8 +5,8 @@ import Caculrator_Kwon.CalculaotrLvThree.Parser;
 import java.util.Scanner;
 
 public class CalculatorApp {
-    public static CalStatus start() throws Exception{
-        CalStatus calStatus = new CalStatus();
+    public static CalculateStatus start() throws Exception{
+        CalculateStatus calculateStatus = new CalculateStatus();
         Parser parser = new Parser();
         Scanner scanner = new Scanner(System.in);
         String firstInput = "";
@@ -34,10 +34,10 @@ public class CalculatorApp {
                 Number result = parser.executeCalculator_Generic();
                 System.out.println("연산 결과 : " + result);
 
-                calStatus.setResultValue(result);
-                calStatus.setStatusName("");
+                calculateStatus.setResultValue(result);
+                calculateStatus.setStatusName("");
 
-                return calStatus;
+                return calculateStatus;
             }
             case "2" -> {
                 System.out.println("수식을 입력해주세요");
@@ -46,33 +46,33 @@ public class CalculatorApp {
                 Number result = parser.executeCalculator_Stack(firstInput);
 
                 System.out.println("연산 결과 : " + result);
-                calStatus.setResultValue(result);
+                calculateStatus.setResultValue(result);
 
-                calStatus.setStatusName("");
-                return calStatus;
+                calculateStatus.setStatusName("");
+                return calculateStatus;
             }
             case "3" -> {
                 System.out.println("비교할 숫자를 입력해주세요");
                 firstInput = scanner.nextLine();
-                calStatus.setStatusName("3");
+                calculateStatus.setStatusName("3");
                 parser.parseFirstNum(firstInput);
-                calStatus.setCheckValue(Double.parseDouble(firstInput));
-                return calStatus;
+                calculateStatus.setCheckValue(Double.parseDouble(firstInput));
+                return calculateStatus;
             }
             case "4" -> {
-                calStatus.setStatusName("4");
-                return calStatus;
+                calculateStatus.setStatusName("4");
+                return calculateStatus;
             }
             case "5" -> {
-                calStatus.setStatusName("5");
-                return calStatus;
+                calculateStatus.setStatusName("5");
+                return calculateStatus;
             }
 
             default -> {
-                calStatus.setStatusName("");
+                calculateStatus.setStatusName("");
             }
         }
-        return calStatus;
+        return calculateStatus;
     }
 
 }
